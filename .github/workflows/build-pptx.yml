@@ -1,0 +1,29 @@
+name: Build PPTX from Markdown
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'docs/slides.md'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc unzip
+
+      - name: Convert Markdown to PPTX
+        run: |
+          pandoc docs/slides.md -t pptx -o docs/5G_6G_能力提升培训_final_v4.pptx
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: 5G_6G_能力提升培训_final_v4.pptx
+          path: docs/5G_6G_能力提升培训_final_v4.pptx
